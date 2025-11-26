@@ -110,6 +110,22 @@ ServoNode::ServoNode(const rclcpp::NodeOptions& options)
 
   servo_params_ = servo_->getParams();
 
+  // set initial command type from parameter
+  if(SERVO_COMMAND_TYPE_STRING_MAP.find(servo_param_listener->get_params().init_command_type) ==
+     SERVO_COMMAND_TYPE_STRING_MAP.end())
+  {
+    RCLCPP_ERROR_STREAM(node_->get_logger(),
+                        "Invalid initial command type parameter: "
+                            << servo_param_listener->get_params().init_command_type
+                            << ". Valid options are JOINT_JOG, TWIST, and POSE. Defaulting to JOINT_JOG.");
+    servo_->setCommandType(CommandType::JOINT_JOG);
+  }
+  else
+  {
+    servo_->setCommandType(
+        SERVO_COMMAND_TYPE_STRING_MAP.at(servo_param_listener->get_params().init_command_type));
+  }
+
   // Create subscriber for jointjog
   joint_jog_subscriber_ = node_->create_subscription<control_msgs::msg::JointJog>(
       servo_params_.joint_command_in_topic, rclcpp::SystemDefaultsQoS(),

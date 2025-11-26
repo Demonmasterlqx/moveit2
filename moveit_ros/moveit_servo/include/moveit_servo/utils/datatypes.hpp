@@ -82,6 +82,16 @@ enum class CommandType : int8_t
   MAX = POSE
 };
 
+const std::unordered_map<CommandType, std::string> SERVO_COMMAND_TYPE_MAP(
+    { { CommandType::JOINT_JOG, "JOINT_JOG" },
+      { CommandType::TWIST, "TWIST" },
+      { CommandType::POSE, "POSE" } });
+const std::unordered_map<std::string, CommandType> SERVO_COMMAND_TYPE_STRING_MAP(
+    { { "JOINT_JOG", CommandType::JOINT_JOG },
+      { "TWIST", CommandType::TWIST },
+      { "POSE", CommandType::POSE } });
+
+
 typedef std::pair<StatusCode, Eigen::VectorXd> JointDeltaResult;
 
 // The joint jog command, this will be vector of length equal to the number of joints of the robot.

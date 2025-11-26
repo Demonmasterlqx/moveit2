@@ -56,6 +56,16 @@ servo:
     If it is empty, the full move group is actuated."
   }
 
+  init_command_type: {
+    type: string,
+    read_only: true,
+    default_value: "JOINT_JOG",
+    description: "The type of command that servo will use for initialization",
+    validation: {
+      one_of<>: [["JOINT_JOG", "TWIST", "POSE"]]
+    }
+  }
+
 ############################# INCOMING COMMAND SETTINGS ########################
   pose_command_in_topic: {
     type: string,
